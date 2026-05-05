@@ -1,105 +1,100 @@
-import { Target, Lightbulb, TrendingUp, Quote } from "lucide-react";
-import { SpotlightCard } from "./ui/SpotlightCard";
-import { motion } from "framer-motion";
+import { Target, Lightbulb, TrendingUp } from "lucide-react";
 
-const items = [
-  { n: "02", t: "Years Training", d: "Deep dive into web development fundamentals & modern frameworks.", icon: Lightbulb },
-  { n: "05", t: "Years Freelancing", d: "Shipping production-grade sites for clients across industries.", icon: Target },
-  { n: "100+", t: "Businesses Helped", d: "Results-driven mindset focused on real business growth.", icon: TrendingUp },
+const stats = [
+  { icon: Lightbulb, n: "2",    label: "Years Training",      desc: "Deep dive into modern frameworks & fundamentals." },
+  { icon: Target,    n: "5+",   label: "Years Freelancing",    desc: "Shipping production-grade sites for real clients." },
+  { icon: TrendingUp,n: "100+", label: "Businesses Helped",    desc: "Results-driven, focused on actual business growth." },
 ];
 
+const tags = ["Strategy First", "Pixel-Perfect", "Future-Ready", "Ultra-Fast"];
+
 const About = () => (
-  <section id="about" className="relative py-32 overflow-hidden">
-    {/* Background Elements */}
-    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
-    <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-primary/10 blur-[100px] rounded-full pointer-events-none" />
+  <section id="about" className="section-padding relative overflow-hidden">
+    <div className="pointer-events-none absolute -bottom-20 -left-20 h-72 w-72 rounded-full bg-primary/8 blur-[80px]" />
 
-    <div className="relative mx-auto max-w-6xl px-6">
-      <div className="grid lg:grid-cols-2 gap-20 items-center">
-        
-        {/* Left Column: Visual/Quote */}
-        <motion.div 
-          initial={{ opacity: 0, x: -30 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          className="relative order-2 lg:order-1"
-        >
-          <SpotlightCard className="p-8 md:p-12 rounded-[2.5rem]">
-            <Quote className="w-12 h-12 text-primary-glow/50 mb-6" />
-            <p className="text-2xl md:text-3xl font-medium leading-tight tracking-tight text-white italic">
-              "Design isn't just about how it looks. It's about how it <span className="text-primary-glow">converts</span> visitors into loyal customers."
-            </p>
-            <div className="mt-8 flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center font-bold text-primary-glow">
-                xk
-              </div>
-              <div>
-                <div className="text-sm font-bold text-white uppercase tracking-widest">xk Agency</div>
-                <div className="text-xs text-muted-foreground">Founder & Lead Designer</div>
-              </div>
-            </div>
-          </SpotlightCard>
-          
-          {/* Floating tag */}
-          <div className="absolute -top-6 -right-6 glass-card px-6 py-3 rounded-2xl border-primary/30 rotate-6 shadow-glow-primary animate-float">
-            <span className="text-xs font-bold uppercase tracking-tighter">Conversion Focused</span>
-          </div>
-        </motion.div>
+    <div className="section-container">
 
-        {/* Right Column: Copy */}
-        <motion.div 
-          initial={{ opacity: 0, x: 30 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          className="order-1 lg:order-2 flex flex-col space-y-6"
-        >
-          <div className="kicker">The Story</div>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-            Bridging the gap between <span className="text-gradient">Vision</span> and <span className="text-primary-glow">Reality</span>.
-          </h2>
-          <p className="text-lg text-muted-foreground leading-relaxed">
-            I am a passionate freelance developer specializing in creating high-performance digital ecosystems. 
-            With over half a decade of experience, I don't just build websites; I build business engines.
+      {/* Header */}
+      <div className="mb-14 max-w-2xl">
+        <div className="label-tag mb-4">About</div>
+        <h2 className="text-3xl sm:text-4xl md:text-5xl text-white leading-tight">
+          Bridging the gap between{" "}
+          <span className="gradient-text">Vision</span> and{" "}
+          <span className="gradient-text">Reality</span>.
+        </h2>
+      </div>
+
+      {/* Two columns */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start mb-14">
+
+        {/* Quote card */}
+        <div className="card p-8 md:p-10">
+          <div className="mb-6 text-4xl text-primary/40 font-serif select-none">"</div>
+          <p className="text-xl sm:text-2xl font-medium leading-snug text-white italic mb-8">
+            Design isn't just about how it looks. It's about how it{" "}
+            <span className="text-primary">converts</span> visitors into loyal
+            customers.
           </p>
-          <div className="grid grid-cols-2 gap-4">
-            {["Strategy First", "Pixel-Perfect", "Future-Ready", "Ultra-Fast"].map((tag) => (
-              <div key={tag} className="flex items-center gap-3">
-                <div className="w-2 h-2 rounded-full bg-primary shadow-glow-primary" />
-                <span className="text-sm font-semibold text-white/80">{tag}</span>
+          <div className="flex items-center gap-3 border-t border-white/8 pt-6">
+            <div className="h-10 w-10 rounded-xl bg-primary/20 border border-primary/30 flex items-center justify-center font-bold text-primary text-sm">
+              xk
+            </div>
+            <div>
+              <div className="text-sm font-bold text-white">xk Agency</div>
+              <div className="text-xs text-white/40">Founder &amp; Lead Designer</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Copy + tags */}
+        <div className="flex flex-col gap-6">
+          <p className="text-white/55 leading-relaxed">
+            I am a passionate freelance developer specializing in creating
+            high-performance digital ecosystems. With over half a decade of
+            experience, I don't just build websites — I build business engines
+            that work around the clock.
+          </p>
+          <p className="text-white/55 leading-relaxed">
+            Every pixel, every interaction, every line of code is shaped by one
+            goal: delivering measurable results for your business.
+          </p>
+          <div className="grid grid-cols-2 gap-3 mt-2">
+            {tags.map((t) => (
+              <div
+                key={t}
+                className="flex items-center gap-2.5 rounded-xl border border-white/8 bg-white/[0.03] px-4 py-3"
+              >
+                <div className="h-2 w-2 shrink-0 rounded-full bg-primary" />
+                <span className="text-sm font-medium text-white/75">{t}</span>
               </div>
             ))}
           </div>
-        </motion.div>
+        </div>
       </div>
 
-      {/* Metrics Grid */}
-      <div className="mt-32 grid md:grid-cols-3 gap-8">
-        {items.map((item, idx) => (
-          <motion.div
-            key={idx}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: idx * 0.1 }}
-          >
-            <SpotlightCard className="p-10 group h-full">
-              <div className="flex items-center justify-between mb-8">
-                <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-primary/20 group-hover:border-primary/50 transition-all duration-500">
-                  <item.icon className="w-6 h-6 text-primary-glow" />
-                </div>
-                <span className="text-4xl font-black text-white/5 group-hover:text-primary/10 transition-colors">0{idx + 1}</span>
+      {/* Stats */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+        {stats.map((s, i) => (
+          <div key={i} className="card p-7 group">
+            <div className="mb-5 flex items-center justify-between">
+              <div className="h-12 w-12 rounded-xl border border-white/8 bg-white/5 flex items-center justify-center transition-all duration-300 group-hover:bg-primary/20 group-hover:border-primary/40">
+                <s.icon size={22} className="text-primary" />
               </div>
-              <div className="text-5xl font-bold text-white mb-2 group-hover:text-primary-glow transition-colors">
-                {item.n}
-              </div>
-              <div className="text-lg font-bold text-white mb-3 uppercase tracking-wide">{item.t}</div>
-              <p className="text-muted-foreground text-sm leading-relaxed">
-                {item.d}
-              </p>
-            </SpotlightCard>
-          </motion.div>
+              <span className="text-4xl font-black text-white/6 group-hover:text-primary/10 transition-colors">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+            </div>
+            <div className="text-4xl font-extrabold text-white mb-1 group-hover:text-primary transition-colors duration-300">
+              {s.n}
+            </div>
+            <div className="text-sm font-semibold uppercase tracking-wider text-white/60 mb-2">
+              {s.label}
+            </div>
+            <p className="text-sm text-white/35 leading-relaxed">{s.desc}</p>
+          </div>
         ))}
       </div>
+
     </div>
   </section>
 );

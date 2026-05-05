@@ -1,110 +1,144 @@
-import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { cn } from "@/lib/utils";
-import { ContactDialog } from "./ContactDialog";
+import { useState, useEffect } from "react";
+import { X, Menu } from "lucide-react";
 
 const links = [
-  { to: "/", label: "Home" },
-  { to: "/about", label: "About" },
-  { to: "/skills", label: "Skills" },
-  { to: "/services", label: "Services" },
-  { to: "/work", label: "Work" },
-  { to: "/pricing", label: "Pricing" },
-  { to: "/contact", label: "Contact" },
+  { href: "#home",     label: "Home" },
+  { href: "#about",    label: "About" },
+  { href: "#services", label: "Services" },
+  { href: "#skills",   label: "Skills" },
+  { href: "#work",     label: "Work" },
+  { href: "#pricing",  label: "Pricing" },
+  { href: "#contact",  label: "Contact" },
 ];
 
 const Navbar = () => {
-  const [scrolled, setScrolled] = useState(false);
-  const location = useLocation();
+  const [scrolled, setScrolled]   = useState(false);
+  const [menuOpen, setMenuOpen]   = useState(false);
+  const [active,   setActive]     = useState("#home");
 
   useEffect(() => {
-    const onScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
+    const onScroll = () => setScrolled(window.scrollY > 30);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Close menu on resize to desktop
+  useEffect(() => {
+    const onResize = () => { if (window.innerWidth >= 768) setMenuOpen(false); };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [menuOpen]);
+
+  const handleNav = (href: string) => {
+    setActive(href);
+    setMenuOpen(false);
+    const el = document.querySelector(href);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
-    <header
-      className={cn(
-        "fixed top-0 inset-x-0 z-50 transition-all duration-500 flex justify-center items-center pointer-events-none",
-        scrolled ? "py-4" : "py-8"
-      )}
-    >
-      <nav
-        className={cn(
-          "flex items-center justify-between transition-all duration-500 pointer-events-auto",
-          scrolled 
-            ? "glass-card w-[90%] md:w-fit px-6 py-3 rounded-full shadow-glow-primary border-primary/20 bg-black/60 backdrop-blur-2xl" 
-            : "w-full max-w-6xl px-6"
-        )}
+    <>
+      <header
+        className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
+          scrolled
+            ? "bg-black/80 backdrop-blur-xl border-b border-white/5 py-3"
+            : "bg-transparent py-5"
+        }`}
       >
-        <Link
-          to="/"
-          className="group flex items-center gap-2 font-display text-2xl font-bold tracking-tighter text-white"
-        >
-          <span className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl bg-primary shadow-glow-primary transition-transform duration-500 group-hover:rotate-12">
-            <span className="relative z-10 text-lg">x</span>
-            <span className="absolute inset-0 bg-gradient-to-tr from-black/20 to-transparent" />
-          </span>
-          <span className={cn(
-            "hidden sm:inline transition-all duration-500",
-            scrolled && "sm:hidden lg:inline"
-          )}>xk<span className="text-primary-glow">agency</span></span>
-        </Link>
+        <div className="section-container flex items-center justify-between">
+          {/* Logo */}
+          <a
+            href="#home"
+            onClick={(e) => { e.preventDefault(); handleNav("#home"); }}
+            className="flex items-center gap-2 group"
+          >
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary font-black text-white text-sm shadow-glow transition-transform duration-300 group-hover:rotate-12">
+              xk
+            </span>
+            <span className="font-display text-lg font-bold text-white">
+              agency
+            </span>
+          </a>
 
-        <div className={cn(
-          "flex items-center transition-all duration-500",
-          scrolled ? "gap-4 md:gap-8" : "gap-8"
-        )}>
-          <ul className={cn(
-            "hidden md:flex items-center gap-1 rounded-full p-1.5 transition-all duration-500",
-            !scrolled && "border border-white/5 bg-white/[0.03] backdrop-blur-xl"
-          )}>
-            {links.map((l) => {
-              const isActive = location.pathname === l.to;
-              return (
-                <li key={l.to}>
-                  <Link
-                    to={l.to}
-                    className={cn(
-                      "relative flex items-center rounded-full px-5 py-2 text-sm font-medium transition-all duration-300",
-                      isActive ? "text-white" : "text-white/60 hover:text-white"
-                    )}
-                  >
-                    {isActive && (
-                      <span className="absolute inset-0 -z-10 rounded-full bg-primary/20 shadow-[inset_0_0_12px_rgba(168,85,247,0.2)] ring-1 ring-primary/40" />
-                    )}
-                    {l.label}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
+          {/* Desktop nav */}
+          <nav className="hidden md:flex items-center gap-1">
+            {links.map((l) => (
+              <button
+                key={l.href}
+                onClick={() => handleNav(l.href)}
+                className={`relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  active === l.href
+                    ? "text-white"
+                    : "text-white/50 hover:text-white"
+                }`}
+              >
+                {active === l.href && (
+                  <span className="absolute inset-0 rounded-lg bg-white/8 border border-white/10" />
+                )}
+                <span className="relative z-10">{l.label}</span>
+              </button>
+            ))}
+          </nav>
 
-          <ContactDialog>
-            <button
-              className={cn(
-                "magnetic-button group hidden lg:inline-flex items-center gap-2 rounded-full bg-primary text-sm font-semibold text-white shadow-glow-primary transition-all duration-500 hover:scale-105 active:scale-95",
-                scrolled ? "px-5 py-2" : "px-6 py-2.5"
-              )}
-            >
-              <span className={scrolled ? "hidden xl:inline" : "inline"}>Let's Talk</span>
-              <div className="flex h-6 w-6 items-center justify-center rounded-full bg-white/20 transition-transform duration-500 group-hover:rotate-45 group-hover:bg-white/30">
-                <span className="text-[10px]">↗</span>
-              </div>
-            </button>
-          </ContactDialog>
+          {/* Desktop CTA */}
+          <a
+            href="#contact"
+            onClick={(e) => { e.preventDefault(); handleNav("#contact"); }}
+            className="hidden md:inline-flex btn-primary text-sm px-5 py-2.5"
+          >
+            Let's Talk
+          </a>
 
-          {/* Mobile menu trigger */}
-          <button className="md:hidden flex h-10 w-10 flex-col items-center justify-center rounded-xl bg-white/5 border border-white/10 transition-all hover:bg-white/10 active:scale-90">
-            <div className="w-5 h-0.5 bg-white mb-1.5 transition-all" />
-            <div className="w-5 h-0.5 bg-white transition-all" />
+          {/* Mobile hamburger */}
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle menu"
+            className="md:hidden flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white transition-colors hover:bg-white/10"
+          >
+            {menuOpen ? <X size={18} /> : <Menu size={18} />}
           </button>
         </div>
-      </nav>
-    </header>
+      </header>
+
+      {/* Mobile Menu Overlay */}
+      <div
+        className={`fixed inset-0 z-40 flex flex-col bg-black/95 backdrop-blur-2xl transition-all duration-300 md:hidden ${
+          menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
+      >
+        <div className="flex flex-col items-center justify-center h-full gap-2 px-6">
+          {links.map((l, i) => (
+            <button
+              key={l.href}
+              onClick={() => handleNav(l.href)}
+              style={{ animationDelay: `${i * 50}ms` }}
+              className={`w-full max-w-xs text-center py-4 rounded-2xl text-xl font-semibold transition-all duration-200 ${
+                menuOpen ? "animate-fade-up" : ""
+              } ${
+                active === l.href
+                  ? "text-white bg-primary/20 border border-primary/30"
+                  : "text-white/60 hover:text-white hover:bg-white/5"
+              }`}
+            >
+              {l.label}
+            </button>
+          ))}
+          <a
+            href="#contact"
+            onClick={(e) => { e.preventDefault(); handleNav("#contact"); }}
+            className="mt-4 btn-primary w-full max-w-xs justify-center text-base"
+          >
+            Let's Talk ↗
+          </a>
+        </div>
+      </div>
+    </>
   );
 };
 
